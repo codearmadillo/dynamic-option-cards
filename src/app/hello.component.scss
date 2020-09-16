@@ -1,0 +1,29 @@
+:host {
+  --border-radius: 5px;
+}
+:host {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  max-width: 300px;
+  background: red;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+:host {
+  .mask {
+    position: absolute;
+  }
+  .content {
+    flex: 1 1 auto;
+    background: blue;
+  }
+  .tools {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 32px;
+    background: green;
+    padding: 8px 0;
+  }
+}
