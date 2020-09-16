@@ -33,8 +33,8 @@ export class CardContentComponent {
       <section class="tools">
         <icon (click)="uiState.toolsOpen = true"></icon>
       </section>
-      <section class="hidden-tools">
-        <article *ngFor="let tool of cardTools" (click)="onToolInteract(tool.name)">
+      <section class="hidden-tools" *ngIf="uiState.toolsOpen">
+        <article *ngFor="let tool of cardTools" (click)="uiState.toolsOpen = false; onToolInteract(tool.name)">
           {{tool.name}}
         </article>
       </section>
