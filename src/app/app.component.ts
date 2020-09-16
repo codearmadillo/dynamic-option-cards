@@ -7,7 +7,8 @@ import { Component, VERSION } from '@angular/core';
 })
 export class AppComponent  {
   name = 'Angular ' + VERSION.major;
+  lastTool : string = null;
   onToolInteract(name : string) {
-    console.log(`You clicked ${name}`);
+    this.lastTool = name;
   }
 }
