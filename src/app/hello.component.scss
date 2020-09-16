@@ -1,12 +1,17 @@
 :host {
   --border-radius: 5px;
+  --background: #fff;
+  --handler-color: #ddd;
+}
+:host {
+  /** Debug */
+  border: 1px solid #e9e9e9;
 }
 :host {
   position: relative;
   display: flex;
   flex-flow: row nowrap;
-  max-width: 300px;
-  background: red;
+  background: var(--background);
   border-radius: var(--border-radius);
   overflow: hidden;
 }
@@ -16,14 +21,53 @@
   }
   .content {
     flex: 1 1 auto;
-    background: blue;
+    box-sizing: border-box;
   }
-  .tools {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 32px;
-    background: green;
-    padding: 8px 0;
+  .hidden-tools {
+    &-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 32px;
+      background: transparent;
+      padding: 8px 0;
+    }
+    &-mask,
+    &-items {
+      position: absolute;
+    }
+    &-mask {
+      z-index: 2;
+      background: var(--background);
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+    }
+    &-items {
+      & {
+        height: 100%;
+        top: 0;
+        right: 0;
+        z-index: 3;
+        display: flex;
+        flex-flow: row nowrap;
+      }
+      .tool {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 64px;
+        background: rgb(40, 48, 61);
+        color: #fff;
+        transition: 250ms;
+        &:hover {
+          background: rgb(33, 39, 49);
+          cursor: pointer;
+        }
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
 :host {
+  --color: #ddd;
   & {
     position: relative;
     width: 18px;
@@ -17,7 +18,7 @@
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: #000;
+      background: var(--color);
       cursor: pointer;
     }
     &::after,

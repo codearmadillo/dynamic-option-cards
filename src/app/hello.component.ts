@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild, AfterViewInit, TemplateRef, AfterViewChecked, ContentChildren, ContentChild, QueryList, AfterContentInit, Output, EventEmitter } from '@angular/core';
 import { Types } from './hello.types';
 import { Subscription } from 'rxjs';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'card-tool',
@@ -24,23 +25,52 @@ export class CardContentComponent {
   selector: 'card',
   template: `
     <ng-container *ngIf="{toolsOpen: false} as uiState">
-      <section class="mask" *ngIf="uiState.toolsOpen">
-        Mask!
-      </section>
-      <section class="content">
+      <section class="ng-card-content content">
         <ng-container *ngTemplateOutlet="cardContentRef ? cardContentRef : null"></ng-container>
       </section>
-      <section class="tools">
+      <section class="hidden-tools-trigger" *ngIf="!uiState.toolsOpen" [@triggerTransition]>
         <icon (click)="uiState.toolsOpen = true"></icon>
       </section>
-      <section class="hidden-tools" *ngIf="uiState.toolsOpen">
-        <article *ngFor="let tool of cardTools" (click)="uiState.toolsOpen = false; onToolInteract(tool.name)">
+      <section class="hidden-tools-items" [@toolsTransition] *ngIf="uiState.toolsOpen">
+        <article class="tool" *ngFor="let tool of cardTools" (click)="uiState.toolsOpen = false; onToolInteract(tool.name)">
           {{tool.name}}
         </article>
       </section>
+      <section class="hidden-tools-mask" [@maskTransition] (click)="uiState.toolsOpen = false" *ngIf="uiState.toolsOpen"></section>
     </ng-container>
   `,
-  styleUrls: [ 'hello.component.scss' ]
+  styleUrls: [ 'hello.component.scss' ],
+  animations: [
+    trigger('maskTransition', [
+      state('*', style({
+        opacity: .65
+      })),
+      state('void', style({
+        opacity: 0
+      })),
+      transition('* <=> void', animate('200ms ease'))
+    ]),
+    trigger('triggerTransition', [
+      state('*', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('void', style({
+        transform: 'translate3d(-64px, 0, 0)'
+      })),
+      transition('* => void', animate('300ms cubic-bezier(0.32, 0, 0.67, 0)')),
+      transition('void => *', animate('300ms cubic-bezier(0.25, 1, 0.5, 1)'))
+    ]),
+    trigger('toolsTransition', [
+      state('*', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('void', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('* => void', animate('300ms cubic-bezier(0.32, 0, 0.67, 0)')),
+      transition('void => *', animate('300ms cubic-bezier(0.25, 1, 0.5, 1)'))
+    ])
+  ]
 })
 export class CardComponent implements AfterContentInit {
   cardTools : Types.Card.ITool[];
